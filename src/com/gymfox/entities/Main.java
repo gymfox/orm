@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static com.gymfox.databases.Entity.setDatabase;
+import static com.gymfox.entities.Entity.setDatabase;
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException, Entity.InvalidIdException {
