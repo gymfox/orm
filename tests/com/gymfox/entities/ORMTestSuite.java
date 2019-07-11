@@ -17,12 +17,11 @@ import static org.junit.runners.Suite.SuiteClasses;
         com.gymfox.entities.DeleteDataFromDatabaseTest.class,
         com.gymfox.entities.EntityTest.class})
 public class ORMTestSuite {
-    static DBManagerImpl dbManager;
+    static DBManager dbManager = new DBManagerImpl();
     static final int FIRST_INDEX = 1;
 
     @BeforeClass
     public static void setUpConnection() throws SQLException, ClassNotFoundException, FileNotFoundException {
-        dbManager = new DBManagerImpl("newDatabaseTest");
         dbManager.initDatabase();
         dbManager.importSQL(new File("schema/schema.sql"));
 

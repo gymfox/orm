@@ -11,24 +11,19 @@ import java.util.Scanner;
 
 import static com.gymfox.entities.Entity.setDatabase;
 
-public class DBManagerImpl {
+public class DBManagerImpl implements DBManager {
     private static final String CREATE_QUERY  = "CREATE DATABASE \"%1$s\"";
     private static final String DROP_QUERY    = "DROP DATABASE \"%1$s\"";
+    private static final String DATABASE_NAME = "DatabaseTest";
     private static final int FIRST_INDEX_PARAMETER = 1;
     private static Connection connection;
     private String DEFAULT_DATABASE = "postgres";
-
-    private final String dbName;
-
-    public DBManagerImpl(String dbName) {
-        this.dbName = dbName;
-    }
 
     public void initDatabase() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
 
         createDatabase();
-        connectToDatabase(dbName);
+        connectToDatabase(DATABASE_NAME);
         setDatabase(connection);
     }
 
@@ -66,13 +61,14 @@ public class DBManagerImpl {
 
     public void createDatabase() throws SQLException {
         connectToDatabase(DEFAULT_DATABASE);
-        createStatement(CREATE_QUERY, dbName);
+        createStatement(CREATE_QUERY, DATABASE_NAME);
         connection.close();
     }
 
+    @Override
     public void dropDatabase() throws SQLException {
         connectToDatabase(DEFAULT_DATABASE);
-        createStatement(DROP_QUERY, dbName);
+        createStatement(DROP_QUERY, DATABASE_NAME);
         connection.close();
     }
 
@@ -80,7 +76,8 @@ public class DBManagerImpl {
         connection.createStatement().executeUpdate(String.format(query, databaseName));
     }
 
-    String getPreparedStatement(String query, int id) throws SQLException {
+    @Override
+    public String getPreparedStatement(String query, int id) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(FIRST_INDEX_PARAMETER, id);
 
